@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museo de Autos Tuning Clásicos</title>
+    <style>
+        /* --- ESTILOS GENERALES --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #e50914;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+        }
+
+        header h1 {
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* --- GALERÍA (MAIN PAGE) --- */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .car-card {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            display: block;
+            border: 1px solid #333;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(229, 9, 20, 0.4);
+        }
+
+        .car-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 3px solid #e50914;
+        }
+
+        .car-card h3 {
+            margin: 15px 0;
+            font-size: 1.2rem;
+        }
+
+        /* --- VENTANAS MODALES (DETALLES DEL AUTO) --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* El truco CSS: Mostrar el modal cuando su ID es el "target" en la URL */
+        .modal:target {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            border: 2px solid #e50914;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 30px;
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #e50914;
+        }
+
+        .specs {
+            margin-top: 20px;
+            background: #121212;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .specs p {
+            margin: 8px 0;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .specs span {
+            font-weight: bold;
+            color: #e50914;
+        }
+
+        /* --- ANIMACIÓN MODAL --- */
+        .modal.show {
+            display: flex !important;
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .modal-content.slide-out {
+            animation: slideOutRight 0.5s ease-out forwards;
+        }
+
+        @keyframes slideOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>JDM Legends Museum</h1>
+        <p>La época dorada del tuning en una sola colección</p>
+    </header>
+
+    <main class="gallery">
+        <div class="car-card" data-modal="lancer">
+            <img src="https://images.customwheeloffset.com/web-compressed/3391371-1-2002-lancer-mitsubishi-oz-rally-rev9-coilovers-aodhan-ah02-machined-silver.jpg" alt="Mitsubishi Lancer">
+            <h3>Mitsubishi Lancer OZ Rally</h3>
+        </div>
+
+        <div class="car-card" data-modal="eclipse">
+            <img src="https://w0.peakpx.com/wallpaper/475/301/HD-wallpaper-mitsubishi-eclipse-mitsubishi-eclipse-tuning-car.jpg" alt="Mitsubishi Eclipse">
+            <h3>Mitsubishi Eclipse</h3>
+        </div>
+
+        <div class="car-card" data-modal="supra">
+            <img src="https://i.pinimg.com/1200x/29/75/f7/2975f7664d27110192a513bf42ff1f68.jpg" alt="Toyota Supra">
+            <h3>Toyota Supra</h3>
+        </div>
+
+        <div class="car-card" data-modal="rx7">
+            <img src="https://wingswest.com/media/catalog/product/cache/9273a9efc9b3f56428f9a655d0b49147/4/9/490144r_2.jpg" alt="Mazda RX7">
+            <h3>Mazda RX7</h3>
+        </div>
+
+        <div class="car-card" data-modal="civic">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/1994_Honda_Civic_Coupe_1.5_DXI_%2813185389695%29.jpg" alt="Honda Civic">
+            <h3>Honda Civic Coupe</h3>
+        </div>
+    </main>
+
+    <div id="lancer" class="modal">
+        <div class="modal-content">
+            <a href="#" class="close-btn">&times;</a>
+            <h2>Mitsubishi Lancer (Modelo OZ Rally)</h2>
+            <div class="specs">
+                <p><span>Marca:</span> Mitsubishi</p>
+                <p><span>Modelo:</span> Lancer OZ Rally</p>
+                <p><span>Año:</span> 2002</p>
+                <p><span>Color:</span> Blanco </p>
+                <p><span>Descripción:</span> Un ícono de las calles y los rallys. Esta unidad cuenta con un color blanco, faldones aerodinámicos y rines deportivos que le dan una postura agresiva y lista para la acción.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="eclipse" class="modal">
+        <div class="modal-content">
+            <a href="#" class="close-btn">&times;</a>
+            <h2>Mitsubishi Eclipse</h2>
+            <div class="specs">
+                <p><span>Marca:</span> Mitsubishi</p>
+                <p><span>Modelo:</span> Eclipse</p>
+                <p><span>Año:</span> 1995</p>
+                <p><span>Color:</span> Blanco (Tuneado)</p>
+                <p><span>Descripción:</span> Famoso en la cultura tuning de los 90s y principios de los 2000s. Este Eclipse blanco modificado cuenta con mejoras de rendimiento, toma de aire en el capó y un kit de carrocería de perfil bajo.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="supra" class="modal">
+        <div class="modal-content">
+            <a href="#" class="close-btn">&times;</a>
+            <h2>Toyota Supra</h2>
+            <div class="specs">
+                <p><span>Marca:</span> Toyota</p>
+                <p><span>Modelo:</span> Supra</p>
+                <p><span>Año:</span> 2000</p>
+                <p><span>Color:</span> Negro (Tuneado)</p>
+                <p><span>Descripción:</span> Una leyenda absoluta del JDM. Equipado con el mítico motor capaz de soportar modificaciones extremas. Esta unidad negra tuneada impone respeto con su enorme alerón trasero y su sonido inconfundible.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="rx7" class="modal">
+        <div class="modal-content">
+            <a href="#" class="close-btn">&times;</a>
+            <h2>Mazda RX7</h2>
+            <div class="specs">
+                <p><span>Marca:</span> Mazda</p>
+                <p><span>Modelo:</span> RX7</p>
+                <p><span>Año:</span> 1997</p>
+                <p><span>Color:</span> Rojo (Tuneado)</p>
+                <p><span>Descripción:</span> Una obra maestra de motor rotativo. Este RX7 rojo brillante combina curvas elegantes con modificaciones de alto rendimiento, un sistema de escape optimizado y un equilibrio de peso perfecto.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="civic" class="modal">
+        <div class="modal-content">
+            <a href="#" class="close-btn">&times;</a>
+            <h2>Honda Civic Coupe</h2>
+            <div class="specs">
+                <p><span>Marca:</span> Honda</p>
+                <p><span>Modelo:</span> Civic Coupe</p>
+                <p><span>Año:</span> 1994</p>
+                <p><span>Color:</span> Amarillo (Tuneado)</p>
+                <p><span>Descripción:</span> El rey del tuning compacto por excelencia. Un Civic amarillo brillante con modificaciones de bajo peso, suspensión rebajada y un estilo callejero clásico que marcó a toda una generación.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get all car cards
+        const carCards = document.querySelectorAll('.car-card');
+        const modals = document.querySelectorAll('.modal');
+
+        // Add click event to each car card
+        carCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const modalId = card.getAttribute('data-modal');
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.add('show');
+                }
+            });
+        });
+
+        // Close modal functionality
+        const closeButtons = document.querySelectorAll('.close-btn');
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const modal = btn.closest('.modal');
+                if (modal) {
+                    const content = modal.querySelector('.modal-content');
+                    content.classList.add('slide-out');
+                    setTimeout(() => {
+                        modal.classList.remove('show');
+                        content.classList.remove('slide-out');
+                    }, 500);
+                }
+            });
+        });
+
+        // Close modal when clicking outside the content
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    const content = modal.querySelector('.modal-content');
+                    content.classList.add('slide-out');
+                    setTimeout(() => {
+                        modal.classList.remove('show');
+                        content.classList.remove('slide-out');
+                    }, 500);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
