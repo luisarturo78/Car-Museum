@@ -8,6 +8,7 @@ on:
 jobs:
   hello_world:
     runs-on: ubuntu-24.04.4
+    # Cada step tiene que estar
     steps:
       - name: ECHO THE MESSAGE
         run: echo "Hola Luis Arturo!"
